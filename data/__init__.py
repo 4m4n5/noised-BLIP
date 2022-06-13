@@ -9,7 +9,7 @@ from data.flickr30k_dataset import flickr30k_train, flickr30k_retrieval_eval
 from data.vqa_dataset import vqa_dataset
 from data.nlvr_dataset import nlvr_dataset
 from data.pretrain_dataset import pretrain_dataset
-from transform.randaugment import RandomAugment
+from transform.randaugment import RandomAugment, RandGaussianNoise
 
 IMAGENET_MEAN = (0.48145466, 0.4578275, 0.40821073)
 IMAGENET_STD = (0.26862954, 0.26130258, 0.27577711)
@@ -24,11 +24,13 @@ def create_dataset(dataset, config, min_scale=0.5):
                                               'ShearX', 'ShearY', 'TranslateX', 'TranslateY', 'Rotate']),
             transforms.ToTensor(),
             normalize,
+            RandGaussianNoise(mean=IMAGENET_MEAN, std=IMAGENET_STD, max_scale=config['noise_scale'])
         ])
     transform_test = transforms.Compose([
         transforms.Resize((config['image_size'],config['image_size']),interpolation=InterpolationMode.BICUBIC),
         transforms.ToTensor(),
         normalize,
+        RandGaussianNoise(mean=IMAGENET_MEAN, std=IMAGENET_STD, max_scale=config['noise_scale'])
         ])
 
     if dataset=='pretrain':

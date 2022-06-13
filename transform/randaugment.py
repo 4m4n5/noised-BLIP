@@ -1,5 +1,25 @@
 import cv2
 import numpy as np
+import torch
+
+IMAGENET_MEAN = (0.48145466, 0.4578275, 0.40821073)
+IMAGENET_STD = (0.26862954, 0.26130258, 0.27577711)
+
+## Tensor-transforms
+# Gaussin noise transforms
+class RandGaussianNoise(object):
+    def __init__(self, mean=IMAGENET_MEAN, std=IMAGENET_STD, max_scale=1.0):
+        self.std = torch.tensor(mean)
+        self.mean = torch.tensor(std)
+        self.max_scale = max_scale
+
+    def __call__(self, tensor):
+        s = torch.randint(0, 10, (1,)) / 10  # num between [0 & 0.9]
+        scale = s * self.max_scale  # num between 0*max_std & 0.9*max_std
+        return (tensor + torch.randn(tensor.size()) * self.std.unsqueeze(-1).unsqueeze(-1) * scale + self.mean.unsqueeze(-1).unsqueeze(-1))/2.0
+
+    def __repr__(self):
+        return self.__class__.__name__ + "(max_scale={0})".format(self.max_scale)
 
 
 ## aug functions
@@ -314,7 +334,7 @@ class RandomAugment(object):
         self.M = M
         self.isPIL = isPIL
         if augs:
-            self.augs = augs       
+            self.augs = augs
         else:
             self.augs = list(arg_dict.keys())
 
@@ -324,13 +344,13 @@ class RandomAugment(object):
 
     def __call__(self, img):
         if self.isPIL:
-            img = np.array(img)            
+            img = np.array(img)
         ops = self.get_random_ops()
         for name, prob, level in ops:
             if np.random.random() > prob:
                 continue
             args = arg_dict[name](level)
-            img = func_dict[name](img, *args) 
+            img = func_dict[name](img, *args)
         return img
 
 
