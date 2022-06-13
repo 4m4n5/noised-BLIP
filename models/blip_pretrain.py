@@ -28,6 +28,7 @@ class BLIP_Pretrain(nn.Module):
                  embed_dim = 256,
                  queue_size = 57600,
                  momentum = 0.995,
+                 vit_path = '',
                  ):
         """
         Args:
@@ -40,9 +41,10 @@ class BLIP_Pretrain(nn.Module):
         self.visual_encoder, vision_width = create_vit(vit=vit, image_size=image_size, patch_size=patch_size, use_grad_checkpointing=vit_grad_ckpt, ckpt_layer=vit_ckpt_layer, drop_path_rate=0)
 
         if vit=='base':
-            checkpoint = torch.hub.load_state_dict_from_url(
-                url="https://dl.fbaipublicfiles.com/deit/deit_base_patch16_224-b5f2ef4d.pth",
-                map_location="cpu", check_hash=True)
+            # checkpoint = torch.hub.load_state_dict_from_url(
+            #     url="https://dl.fbaipublicfiles.com/deit/deit_base_patch16_224-b5f2ef4d.pth",
+            #     map_location="cpu", check_hash=True)
+            checkpoint = torch.load(vit_path, map_location='cpu')
             state_dict = checkpoint["model"]
             state_dict["pos_embed"] = interpolate_pos_embed(state_dict["pos_embed"], self.visual_encoder)
             for key in self.visual_encoder.state_dict().keys():
