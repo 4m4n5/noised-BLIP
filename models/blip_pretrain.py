@@ -21,6 +21,7 @@ class BLIP_Pretrain(nn.Module):
     def __init__(self,
                  med_config = 'configs/bert_config.json',
                  image_size = 224,
+                 patch_size = 4,
                  vit = 'base',
                  vit_grad_ckpt = False,
                  vit_ckpt_layer = 0,
@@ -35,8 +36,8 @@ class BLIP_Pretrain(nn.Module):
             vit (str): model size of vision transformer
         """
         super().__init__()
-
-        self.visual_encoder, vision_width = create_vit(vit,image_size, vit_grad_ckpt, vit_ckpt_layer, 0)
+        # create_vit(vit=vit, image_size=image_size, patch_size=patch_size, use_grad_checkpointing=vit_grad_ckpt, ckpt_layer=vit_ckpt_layer)
+        self.visual_encoder, vision_width = create_vit(vit=vit, image_size=image_size, patch_size=patch_size, use_grad_checkpointing=vit_grad_ckpt, ckpt_layer=vit_ckpt_layer, drop_path_rate=0)
 
         if vit=='base':
             checkpoint = torch.hub.load_state_dict_from_url(
@@ -68,7 +69,7 @@ class BLIP_Pretrain(nn.Module):
         self.itm_head = nn.Linear(text_width, 2)
 
         # create momentum encoders
-        self.visual_encoder_m, vision_width = create_vit(vit,image_size)
+        self.visual_encoder_m, vision_width = create_vit(vit=vit, image_size=image_size, patch_size=patch_size)
         self.vision_proj_m = nn.Linear(vision_width, embed_dim)
         self.text_encoder_m = BertModel(config=encoder_config, add_pooling_layer=False)
         self.text_proj_m = nn.Linear(text_width, embed_dim)
