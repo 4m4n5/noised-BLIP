@@ -1,3 +1,4 @@
+#python -m torch.distributed.run --nproc_per_node=8 pretrain.py --config ./configs/pretrain_ns1_lr2e4.yaml --output_dir '/export/home/saves/blip/ns1_lr2e4' --checkpoint /export/home/saves/blip/ns2/checkpoint_00.pth
 train_file: ['/export/share/junnan-li/VL_pretrain/annotation/filter/cs_final_synthetic/annotation_clean.json']
 laion_path: ''
 
