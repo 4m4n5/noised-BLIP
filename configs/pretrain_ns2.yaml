@@ -3,8 +3,8 @@ laion_path: ''
 
 # size of vit model; base or large
 vit: 'base'
-vit_grad_ckpt: False
-vit_ckpt_layer: 0
+vit_grad_ckpt: True
+vit_ckpt_layer: 12
 vit_patch_size: 4
 vit_path: '/export/home/saves/deit_64_ns1/best_checkpoint.pth'
 
