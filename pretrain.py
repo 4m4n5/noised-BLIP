@@ -105,7 +105,7 @@ def main(args, config):
 
     model = model.to(device)
 
-    optimizer = torch.optim.AdamW(params=model.parameters(), lr=config['init_lr'], weight_decay=config['weight_decay'], betas=config['betas'])
+    optimizer = torch.optim.AdamW(params=model.parameters(), lr=config['init_lr'], weight_decay=config['weight_decay'], betas=(config['beta1'], config['beta2']))
 
     start_epoch = 0
     if args.checkpoint:
