@@ -1,0 +1,29 @@
+train_file: ['/export/share/junnan-li/VL_pretrain/annotation/filter/cs_final_synthetic/annotation_clean.json']
+laion_path: ''
+
+# size of vit model; base or large
+vit: 'base'
+vit_grad_ckpt: True
+vit_ckpt_layer: 12
+vit_patch_size: 4
+vit_path: '/export/home/saves/deit_64_ns1/best_checkpoint.pth'
+
+image_size: 64
+batch_size: 75
+
+queue_size: 57600
+alpha: 0.4
+
+noise_schedule: "cosine"
+noise_timesteps: 1000
+
+# optimizer
+weight_decay: 0.05
+init_lr: 2e-4
+min_lr: 1e-6
+warmup_lr: 1e-6
+lr_decay_rate: 0.9
+max_epoch: 20
+warmup_steps: 5000
+beta1: 0.9
+beta2: 0.98
