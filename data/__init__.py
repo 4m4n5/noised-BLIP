@@ -30,7 +30,7 @@ def create_dataset(dataset, config, min_scale=0.5):
         transforms.Resize((config['image_size'],config['image_size']),interpolation=InterpolationMode.BICUBIC),
         transforms.ToTensor(),
         normalize,
-        RandGaussianNoise(mean=IMAGENET_MEAN, std=IMAGENET_STD, max_scale=config['noise_scale'])
+        TimestepNoise(timesteps=config['noise_timesteps'], noise_schedule=config['noise_schedule'])
         ])
 
     if dataset=='pretrain':
