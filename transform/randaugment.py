@@ -54,14 +54,14 @@ class TimestepNoise(object):
         else:
             raise NotImplementedError()
 
-        self.alphas = 1. - self.betas
-        self.alphas_cumprod = torch.cumprod(self.alphas, axis = 0)
+        self.alphas = (1. - self.betas).to(torch.float32)
+        self.alphas_cumprod = torch.cumprod(self.alphas, axis = 0).to(torch.float32)
 
         timesteps, = self.betas.shape
         self.num_timesteps = int(timesteps)
 
-        self.sqrt_alphas_cumprod = torch.sqrt(self.alphas_cumprod)
-        self.sqrt_one_minus_alphas_cumprod = torch.sqrt(1. - self.alphas_cumprod)
+        self.sqrt_alphas_cumprod = torch.sqrt(self.alphas_cumprod).to(torch.float32)
+        self.sqrt_one_minus_alphas_cumprod = torch.sqrt(1. - self.alphas_cumprod).to(torch.float32)
 
     def __call__(self, tensor):
         noise = torch.randn_like(tensor)
@@ -76,7 +76,7 @@ class TimestepNoise(object):
 
     def __repr__(self):
         return self.__class__.__name__
-        
+
 
 ## aug functions
 def identity_func(img):
