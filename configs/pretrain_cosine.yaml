@@ -16,6 +16,7 @@ alpha: 0.4
 
 noise_schedule: "cosine"
 noise_timesteps: 1000
+noise_percentage: 90
 
 # optimizer
 weight_decay: 0.05
