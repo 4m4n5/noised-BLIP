@@ -54,7 +54,7 @@ class TimestepNoise(object):
         else:
             raise NotImplementedError()
 
-        self.cutoff = (100 - self.percentage)
+        self.cutoff = (100 - percentage)
 
         self.alphas = (1. - self.betas).to(torch.float32)
         self.alphas_cumprod = torch.cumprod(self.alphas, axis = 0).to(torch.float32)
