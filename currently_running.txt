@@ -1,0 +1,5 @@
+Running on sfr-pod-8a100-2
+python -m torch.distributed.run --nproc_per_node=8 pretrain.py --config ./configs/pretrain_cosine.yaml --output_dir /export/home/saves/blip/timestep_noise/cosine_1000_ft --checkpoint /export/home/saves/blip/ns_noise/ns1_lr2e4/checkpoint_09.pth
+
+Running on sfr-pod-8a100-1
+python -m torch.distributed.run --nproc_per_node=8 pretrain.py --config ./configs/pretrain_cosine.yaml --output_dir /export/home/saves/blip/timestep_noise/cosine_1000

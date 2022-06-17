@@ -24,13 +24,12 @@ def create_dataset(dataset, config, min_scale=0.5):
                                               'ShearX', 'ShearY', 'TranslateX', 'TranslateY', 'Rotate']),
             transforms.ToTensor(),
             normalize,
-            TimestepNoise(timesteps=config['noise_timesteps'], noise_schedule=config['noise_schedule'])
+            TimestepNoise(timesteps=config['noise_timesteps'], noise_schedule=config['noise_schedule'], percentage=config['noise_percentage']),
         ])
     transform_test = transforms.Compose([
         transforms.Resize((config['image_size'],config['image_size']),interpolation=InterpolationMode.BICUBIC),
         transforms.ToTensor(),
         normalize,
-        TimestepNoise(timesteps=config['noise_timesteps'], noise_schedule=config['noise_schedule'])
         ])
 
     if dataset=='pretrain':

@@ -46,13 +46,15 @@ class RandGaussianNoise(object):
 
 
 class TimestepNoise(object):
-    def __init__(self, timesteps=1000, noise_schedule="cosine"):
+    def __init__(self, timesteps=1000, noise_schedule="cosine", percentage=90):
         if noise_schedule == "cosine":
             self.betas = cosine_beta_schedule(timesteps).to(torch.float32)
         elif noise_schedule == "linear":
             self.betas = linear_beta_schedule(timesteps).to(torch.float32)
         else:
             raise NotImplementedError()
+
+        self.cutoff = (100 - self.percentage)
 
         self.alphas = (1. - self.betas).to(torch.float32)
         self.alphas_cumprod = torch.cumprod(self.alphas, axis = 0).to(torch.float32)
@@ -71,6 +73,11 @@ class TimestepNoise(object):
             extract(self.sqrt_alphas_cumprod, t, tensor.shape) * tensor +
             extract(self.sqrt_one_minus_alphas_cumprod, t, tensor.shape) * noise
         )
+
+        # Dont add noise 10% of times
+        coin = torch.randint(0, 100, (1,),)
+        if coin < self.cutoff:
+            noised = tensor
 
         return noised
 
