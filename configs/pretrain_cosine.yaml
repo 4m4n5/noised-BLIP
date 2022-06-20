@@ -6,7 +6,7 @@ vit: 'base'
 vit_grad_ckpt: True
 vit_ckpt_layer: 12
 vit_patch_size: 4
-vit_path: '/export/home/saves/deit_64_ns1/best_checkpoint.pth'
+vit_path: '/export/home/saves/deit/cosine1000_p90_31__p95/best_checkpoint.pth'
 
 image_size: 64
 batch_size: 75
